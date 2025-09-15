@@ -10,6 +10,7 @@ import { CurrentUserProvider } from "./CurrentUserContext.jsx";
 import RequireAuth from "./routes/RequireAuth.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
+import AddEvent from "./components/AddEvent.jsx";
 
 const router = createBrowserRouter([
   {
@@ -27,6 +28,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     element: <Register/>
+  },
+  {
+    path: "/add-event",
+    element: <AddEvent/>
   }
 ]);
 

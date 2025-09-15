@@ -1,7 +1,14 @@
 import NavBar from "../routes/Navbar";
 import { useFormik } from "formik";
+import { useContext } from "react";
+import { CurrentUserContext } from "../CurrentUserContext";
+import { useNavigate } from "react-router-dom";
 
 export default function Register() {
+
+  const navigate = useNavigate();
+  const {setCurrentUser} = useContext(CurrentUserContext);
+
   const validate = (values) => {
     const errors = {};
 
@@ -55,7 +62,8 @@ export default function Register() {
     },
     validate,
     onSubmit: (values) => {
-      toggleLogin();
+      setCurrentUser(values.userName);
+      navigate("/");
     },
   });
 
@@ -115,7 +123,7 @@ export default function Register() {
           value={formik.values.confirmPw}
         />
         {formik.touched.confirmPw && formik.errors.confirmPw ? <div>{formik.errors.confirmPw}</div> : null}
-        <button type="submit">Login</button>
+        <button type="submit" disabled={!formik.dirty}>Login</button>
       </form>
       <p>Already have an account? <a href="/login">Login</a></p>
     </div>

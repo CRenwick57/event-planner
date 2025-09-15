@@ -10,7 +10,7 @@ export default function NavBar() {
             </Link>
           </li>
           <li>
-            <Link to="/AddEvent" className="nav_link">
+            <Link to="/add-event" className="nav_link">
               Add Event
             </Link>
           </li>
