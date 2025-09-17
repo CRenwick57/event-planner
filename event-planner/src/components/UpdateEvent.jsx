@@ -1,9 +1,20 @@
 import { useContext } from "react";
 import { useFormik } from "formik";
 import { CurrentUserContext } from "../CurrentUserContext";
+import { useNavigate, useLocation } from "react-router-dom";
 import NavBar from "../routes/Navbar";
-//TODO: Clear the form after submission
-export default function AddEvent() {
+
+export default function UpdateEvent() {
+  const location = useLocation();
+  const {
+    eventId,
+    oldEventName,
+    oldEventDate,
+    oldEventTime,
+    oldEventLocation,
+    oldEventDescription,
+  } = location.state || {};
+  const navigate = useNavigate();
   const { currentUser } = useContext(CurrentUserContext);
 
   class Event {
@@ -31,22 +42,24 @@ export default function AddEvent() {
     localStorage.setItem("eventList", strEventList);
   }
 
-  function createNewEvent(name, date, time, location, description) {
+  function updateEventInList(eventList, newEvent) {
+    let eventIndex = eventList.findIndex((event) => event.key === eventId);
+    eventList[eventIndex] = newEvent;
+    return eventList;
+  }
+
+  function updateEventAndAddToLocalStorage(
+    name,
+    date,
+    time,
+    location,
+    description
+  ) {
     let eventList = loadEventListFromLocalStorage();
-    let lastId =
-      eventList.length > 0 && eventList != null
-        ? eventList[eventList.length - 1].key
-        : 0;
-    let newEvent = new Event(
-      lastId + 1,
-      name,
-      date,
-      time,
-      location,
-      description
-    );
-    eventList.push(newEvent);
+    let newEvent = new Event(eventId, name, date, time, location, description);
+    updateEventInList(eventList, newEvent);
     saveEventListToLocalStorage(eventList);
+    navigate("/");
   }
 
   const validate = (values) => {
@@ -73,15 +86,15 @@ export default function AddEvent() {
 
   const formik = useFormik({
     initialValues: {
-      eventName: "",
-      date: "",
-      time: "",
-      location: "",
-      description: "",
+      eventName: oldEventName,
+      date: oldEventDate,
+      time: oldEventTime,
+      location: oldEventLocation,
+      description: oldEventDescription,
     },
     validate,
     onSubmit: (values, { resetForm }) => {
-      createNewEvent(
+      updateEventAndAddToLocalStorage(
         values.eventName,
         values.date,
         values.time,
@@ -104,7 +117,7 @@ export default function AddEvent() {
         }}
       >
         <div style={{ maxWidth: 600 }}>
-          <h2>Add Event</h2>
+          <h2>Update Event</h2>
           <form className="form-container" onSubmit={formik.handleSubmit}>
             <label htmlFor="eventName">Event Name</label>
             <input
@@ -172,7 +185,7 @@ export default function AddEvent() {
               value={formik.values.description}
             />
             <button type="submit" disabled={!formik.dirty}>
-              Add Event
+              Update Event
             </button>
           </form>
         </div>

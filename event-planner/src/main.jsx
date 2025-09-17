@@ -11,6 +11,8 @@ import RequireAuth from "./routes/RequireAuth.jsx";
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import AddEvent from "./components/AddEvent.jsx";
+import Help from "./components/Help.jsx";
+import UpdateEvent from "./components/UpdateEvent.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,16 +25,32 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login/>
+    element: <Login />,
   },
   {
     path: "/register",
-    element: <Register/>
+    element: <Register />,
   },
   {
     path: "/add-event",
-    element: <AddEvent/>
-  }
+    element: (
+      <RequireAuth>
+        <AddEvent />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: "/help",
+    element: <Help />,
+  },
+  {
+    path: "/update-event-details",
+    element: (
+      <RequireAuth>
+        <UpdateEvent />
+      </RequireAuth>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(

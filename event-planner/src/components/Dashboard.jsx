@@ -1,48 +1,67 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext } from "../CurrentUserContext";
-import NavBar from "../routes/Navbar";
+import Event from "./Event";
 
-//TODO: Add ability to update event details
-export default function Dashboard(){
-    
-    const {currentUser} = useContext(CurrentUserContext);
+export default function Dashboard() {
+  const { currentUser } = useContext(CurrentUserContext);
+  const [activeEventList, setActiveEventList] = useState([]);
+  const [eventListReloadTrigger, setEventListReloadTrigger] = useState(true);
 
-    function loadEventListFromLocalStorage(){
-        let localStorageEventList = localStorage.getItem("eventList");
-        let eventList = localStorageEventList ? JSON.parse(localStorageEventList) : [];
-        let usersEventList = eventList.filter(checkEvent);
-        return usersEventList;
+  function loadWholeEventListFromLocalStorage() {
+    let localStorageEventList = localStorage.getItem("eventList");
+    let eventList = localStorageEventList
+      ? JSON.parse(localStorageEventList)
+      : [];
+    return eventList;
+  }
+
+  function sortEvents(a,b) {
+        const dateTimeA = new Date(`${a.date} ${a.time}`);
+        const dateTimeB = new Date(`${b.date} ${b.time}`);
+
+        return dateTimeA - dateTimeB;
+  }
+
+  function loadUsersEventListFromLocalStorage() {
+    let eventList = loadWholeEventListFromLocalStorage();
+    let usersEventList = eventList.filter(checkEvent);
+    usersEventList.sort(sortEvents)
+    return usersEventList;
+  }
+
+  function checkEvent(event) {
+    let userCheck = event.user == currentUser ? true : false;
+    let dateAsDate = new Date(`${event.date} ${event.time}`);
+    let futureEventCheck = dateAsDate > Date.now() ? true : false;
+    return userCheck && futureEventCheck;
+  }
+
+  function deleteEvent(eventId) {
+    let eventList = loadWholeEventListFromLocalStorage();
+    let updatedList = eventList.filter((event) => event.key !== eventId);
+    let strEventList = JSON.stringify(updatedList);
+    localStorage.setItem("eventList", strEventList);
+    setEventListReloadTrigger(true);
+  }
+
+  useEffect(() => {
+    if (eventListReloadTrigger == true) {
+      setActiveEventList(loadUsersEventListFromLocalStorage());
+      setEventListReloadTrigger(false);
     }
+  }, [eventListReloadTrigger]);
 
-    function checkEvent(event){
-        let userCheck = event.user == currentUser ? true : false;
-        let dateAsDate = new Date(event.date);
-        let futureEventCheck = dateAsDate > Date.now() ? true : false
-        return userCheck && futureEventCheck;
-    }
-
-    const activeEventList = loadEventListFromLocalStorage();
-
-    const eventDisplay = (
-        <div className="d-flex flex-row flex-wrap">
-            {activeEventList.map((event) => (
-                <div>
-                    <p>Event ID: {event.key}</p>
-                    <h2>{event.name}</h2>
-                    <h3>{event.date}</h3>
-                    <h3>{event.time}</h3>
-                    <h3>{event.location}</h3>
-                    <p>{event.description}</p>
-                    </div>
-                
-            ))}
-        </div>
-    )
-
-    return (
-        <>
-            <h1>{currentUser}'s Dashboard</h1>
-            {eventDisplay}
-        </>
-    )
+  const eventDisplay = activeEventList.map((event) => (
+    <Event
+      key={event.key}
+      eventId={event.key}
+      event={event}
+      deleteFunction={deleteEvent}
+    />
+  ));
+  return (
+    <>
+      <h1>{currentUser}'s Dashboard</h1> {eventDisplay}{" "}
+    </>
+  );
 }
