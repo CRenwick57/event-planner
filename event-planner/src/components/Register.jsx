@@ -5,9 +5,8 @@ import { CurrentUserContext } from "../CurrentUserContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Register() {
-
   const navigate = useNavigate();
-  const {setCurrentUser} = useContext(CurrentUserContext);
+  const { setCurrentUser } = useContext(CurrentUserContext);
 
   const validate = (values) => {
     const errors = {};
@@ -70,63 +69,86 @@ export default function Register() {
   return (
     <>
       <NavBar />
-    <div style={{maxWidth: 600}}>
-      <h2>Register</h2>
-      <form className='form-container' onSubmit={formik.handleSubmit}>
-        <label htmlFor="fullName">Full Name</label>
-        <input
-          id="fullName"
-          name="fullName"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.fullName}
-        />
-        {formik.touched.fullName && formik.errors.fullName ? <div>{formik.errors.fullName}</div> : null}
-        <label htmlFor="userName">Username</label>
-        <input
-          id="userName"
-          name="userName"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.userName}
-        />
-        {formik.touched.userName && formik.errors.userName ? <div>{formik.errors.userName}</div> : null}
-        <label htmlFor="email">Email Address</label>
-        <input
-          id="email"
-          name="email"
-          type="email"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.email}
-        />
-        {formik.touched.email && formik.errors.email ? <div>{formik.errors.email}</div> : null}
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-        {formik.touched.password && formik.errors.password ? <div>{formik.errors.password}</div> : null}
-        <label htmlFor="confirmPw">Confirm Password</label>
-        <input
-          id="confirmPw"
-          name="confirmPw"
-          type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.confirmPw}
-        />
-        {formik.touched.confirmPw && formik.errors.confirmPw ? <div>{formik.errors.confirmPw}</div> : null}
-        <button type="submit" disabled={!formik.dirty}>Login</button>
-      </form>
-      <p>Already have an account? <a href="/login">Login</a></p>
-    </div>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center", // vertical centering
+          minHeight: "80vh", // take most of the viewport height
+          flexDirection: "column", // stack children vertically
+        }}
+      >
+        <div style={{ maxWidth: 600 }}>
+          <h2>Register</h2>
+          <form className="form-container" onSubmit={formik.handleSubmit}>
+            <label htmlFor="fullName">Full Name</label>
+            <input
+              id="fullName"
+              name="fullName"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.fullName}
+            />
+            {formik.touched.fullName && formik.errors.fullName ? (
+              <div>{formik.errors.fullName}</div>
+            ) : null}
+            <label htmlFor="userName">Username</label>
+            <input
+              id="userName"
+              name="userName"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.userName}
+            />
+            {formik.touched.userName && formik.errors.userName ? (
+              <div>{formik.errors.userName}</div>
+            ) : null}
+            <label htmlFor="email">Email Address</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.email}
+            />
+            {formik.touched.email && formik.errors.email ? (
+              <div>{formik.errors.email}</div>
+            ) : null}
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <div>{formik.errors.password}</div>
+            ) : null}
+            <label htmlFor="confirmPw">Confirm Password</label>
+            <input
+              id="confirmPw"
+              name="confirmPw"
+              type="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.confirmPw}
+            />
+            {formik.touched.confirmPw && formik.errors.confirmPw ? (
+              <div>{formik.errors.confirmPw}</div>
+            ) : null}
+            <button type="submit" disabled={!formik.dirty}>
+              Login
+            </button>
+          </form>
+          <p>
+            Already have an account? <a href="/login">Login</a>
+          </p>
+        </div>
+      </div>
     </>
   );
 }

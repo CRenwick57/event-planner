@@ -38,37 +38,49 @@ export default function Login() {
 
   return (
     <>
-    <NavBar/>
-    <div>
-      <h2>Log in</h2>
-      <form onSubmit={formik.handleSubmit}>
-        <label htmlFor="userName">Username</label>
-        <input
-          id="userName"
-          name="userName"
-          type="text"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.userName}
-        />
-        {formik.touched.userName && formik.errors.userName ? (
-          <div>{formik.errors.userName}</div>
-        ) : null}
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          type="password"
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          value={formik.values.password}
-        />
-        {formik.touched.password && formik.errors.password ? (
-          <div>{formik.errors.password}</div>
-        ) : null}
-        <button type="submit">Login</button>
-      </form>
-    </div>
+      <NavBar />
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center", // vertical centering
+          minHeight: "80vh", // take most of the viewport height
+          flexDirection: "column", // stack children vertically
+        }}
+      >
+        <div>
+          <h2>Log in</h2>
+          <form onSubmit={formik.handleSubmit}>
+            <label htmlFor="userName">Username</label>
+            <input
+              id="userName"
+              name="userName"
+              type="text"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.userName}
+            />
+            {formik.touched.userName && formik.errors.userName ? (
+              <div>{formik.errors.userName}</div>
+            ) : null}
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              name="password"
+              type="password"
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              value={formik.values.password}
+            />
+            {formik.touched.password && formik.errors.password ? (
+              <div>{formik.errors.password}</div>
+            ) : null}
+            <button type="submit">Login</button>
+          </form>
+          <p>
+            Don't have an account? <a href="/register">Register</a>
+          </p>
+        </div>
+      </div>
     </>
   );
 }
