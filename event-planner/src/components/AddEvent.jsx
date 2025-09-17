@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useFormik } from "formik";
 import { CurrentUserContext } from "../CurrentUserContext";
 import NavBar from "../routes/Navbar";
-//TODO: Clear the form after submission
+
 export default function AddEvent() {
   const { currentUser } = useContext(CurrentUserContext);
 
